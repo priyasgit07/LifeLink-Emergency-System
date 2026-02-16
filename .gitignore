@@ -1,0 +1,13 @@
+# Virtual environments
+venv/
+backend/venv/
+
+# Database files
+*.db
+
+# Generated QR codes
+backend/static/qr_codes/
+
+# Python cache
+__pycache__/
+*.pyc
