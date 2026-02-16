@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Emergency Data Retrieved</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: Arial, sans-serif; background: #f4f4f4; min-height: 100vh; padding: 20px; }
+        .header { background: #27ae60; color: white; padding: 15px 20px; border-radius: 8px; margin-bottom: 20px; text-align: center; }
+        .container { max-width: 700px; margin: 0 auto; background: white; padding: 40px; border-radius: 8px; box-shadow: 0 2px 10px rgba(0,0,0,0.1); }
+        h1 { color: #27ae60; margin-bottom: 30px; text-align: center; }
+        .data-card { background: #f8f9fa; padding: 20px; border-radius: 8px; margin-bottom: 15px; border-left: 4px solid #27ae60; }
+        .data-label { font-weight: bold; color: #555; font-size: 14px; margin-bottom: 5px; }
+        .data-value { color: #2c3e50; font-size: 18px; }
+        .blood-group { font-size: 32px; font-weight: bold; color: #c0392b; text-align: center; padding: 20px; background: white; border-radius: 8px; margin: 20px 0; }
+        .alert { background: #fff3cd; border: 2px solid #ffc107; padding: 20px; border-radius: 8px; margin-top: 30px; text-align: center; }
+        .alert strong { color: #856404; font-size: 16px; }
+        .back-btn { display: block; text-align: center; margin-top: 30px; padding: 12px; background: #3498db; color: white; text-decoration: none; border-radius: 6px; }
+        .back-btn:hover { background: #2980b9; }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <h2>✓ Emergency Medical Access Successful</h2>
+    </div>
+    
+    <div class="container">
+        <h1>Patient Emergency Information</h1>
+        
+        <div class="data-card">
+            <div class="data-label">Patient Name</div>
+            <div class="data-value">John Doe</div>
+        </div>
+        
+        <div class="blood-group">
+            Blood Group: O+
+        </div>
+        
+        <div class="data-card">
+            <div class="data-label">Medical Conditions / Allergies</div>
+            <div class="data-value">Diabetes Type 2, Penicillin Allergy</div>
+        </div>
+        
+        <div class="data-card">
+            <div class="data-label">Emergency Contact</div>
+            <div class="data-value">Jane Doe - +91 9876543210</div>
+        </div>
+        
+        <div class="alert">
+            <strong>⚠️ Emergency Alert Sent to Guardian</strong><br>
+            <p style="margin-top: 10px; color: #856404;">Guardian has been notified of emergency medical access.</p>
+            <p style="margin-top: 5px; color: #666; font-size: 14px;">Access logged for audit purposes.</p>
+            <p style="margin-top: 10px; color: #333; font-weight: bold;">Timestamp: <span id="alertTime"></span></p>
+        </div>
+        
+        <a href="/scan" class="back-btn">Access Another Record</a>
+    </div>
+</body>
+</html>

@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Update Medical Records</title>
+
+<!-- Font Awesome -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+
+<style>
+body{
+    margin:0;
+    font-family:'Segoe UI',sans-serif;
+    background:linear-gradient(135deg,#6a6adf,#8f94fb);
+    min-height:100vh;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+}
+
+.container{
+    background:#fff;
+    width:600px;
+    max-width:95%;
+    padding:50px;
+    border-radius:22px;
+    box-shadow:0 25px 60px rgba(0,0,0,0.3);
+}
+
+.header{
+    text-align:center;
+    margin-bottom:25px;
+}
+
+.header i{
+    font-size:34px;
+    color:#6a6adf;
+    margin-bottom:10px;
+}
+
+.header h2{
+    font-size:28px;
+    margin-bottom:8px;
+}
+
+.header p{
+    color:#666;
+    font-size:15px;
+}
+
+.info-box{
+    background:#fff4d6;
+    border:1px solid #f1c40f;
+    padding:14px;
+    border-radius:10px;
+    font-size:14px;
+    margin-bottom:25px;
+}
+
+.info-box i{
+    color:#f39c12;
+    margin-right:6px;
+}
+
+.form-group{
+    margin-bottom:22px;
+}
+
+label{
+    font-weight:bold;
+    font-size:14px;
+    margin-bottom:8px;
+    display:block;
+}
+
+input, textarea{
+    width:100%;
+    padding:15px;
+    border-radius:10px;
+    border:1px solid #ddd;
+    font-size:15px;
+}
+
+textarea{
+    resize:none;
+    height:100px;
+}
+
+input:focus, textarea:focus{
+    outline:none;
+    border-color:#6a6adf;
+}
+
+small{
+    display:block;
+    margin-top:6px;
+    color:#777;
+    font-size:13px;
+}
+
+button{
+    width:100%;
+    padding:18px;
+    background:#6a6adf;
+    color:white;
+    border:none;
+    border-radius:12px;
+    font-size:17px;
+    font-weight:bold;
+    cursor:pointer;
+    margin-top:10px;
+}
+
+button:hover{
+    background:#5757d6;
+}
+
+.back{
+    display:block;
+    margin-top:20px;
+    text-align:center;
+    text-decoration:none;
+    color:#6a6adf;
+    font-size:14px;
+}
+</style>
+</head>
+
+<body>
+
+<div class="container">
+
+<div class="header">
+    <i class="fa-solid fa-file-medical"></i>
+    <h2>Update Medical Records</h2>
+    <p>Post-Treatment Medical Information Update</p>
+</div>
+
+<div class="info-box">
+    <i class="fa-solid fa-arrows-rotate"></i>
+    Keep your emergency medical profile up-to-date for future emergencies
+</div>
+
+<form method="POST" action="/update">
+
+    <div class="form-group">
+        <label>Your User ID *</label>
+        <input type="text" name="citizen_id" required placeholder="e.g. LL1009">
+        <small>Enter the User ID you received during registration</small>
+    </div>
+
+    <div class="form-group">
+        <label>Treatment Undergone *</label>
+        <textarea name="treatment" required placeholder="Describe the treatment you received"></textarea>
+    </div>
+
+    <div class="form-group">
+        <label>New Medical Conditions (if any)</label>
+        <textarea name="new_conditions" placeholder="Any new conditions or allergies discovered"></textarea>
+    </div>
+
+    <button type="submit">
+        <i class="fa-solid fa-floppy-disk"></i> Update Records
+    </button>
+
+</form>
+
+<a href="/" class="back">← Back to Home</a>
+
+</div>
+
+</body>
+</html>

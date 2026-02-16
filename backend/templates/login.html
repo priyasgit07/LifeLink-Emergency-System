@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Authority Login - Emergency Medical Access</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            font-family: Arial, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        /* 🔥 KEY SIZE FIX */
+        .container {
+            width: 600px;
+            max-width: 95%;
+            background: white;
+            padding: 60px;
+            border-radius: 22px;
+            box-shadow: 0 28px 65px rgba(0,0,0,0.30);
+        }
+
+        h1 {
+            color: #2c3e50;
+            margin-bottom: 12px;
+            text-align: center;
+            font-size: 32px;
+        }
+
+        .subtitle {
+            text-align: center;
+            color: #666;
+            margin-bottom: 42px;
+            font-size: 17px;
+        }
+
+        .form-group {
+            margin-bottom: 26px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 10px;
+            color: #555;
+            font-weight: bold;
+            font-size: 16px;
+        }
+
+        /* 🔥 INPUT SIZE FIX */
+        input {
+            width: 100%;
+            padding: 18px;
+            border: 1px solid #ddd;
+            border-radius: 10px;
+            font-size: 17px;
+        }
+
+        input:focus {
+            outline: none;
+            border-color: #667eea;
+        }
+
+        /* 🔥 BUTTON SIZE FIX */
+        button {
+            background: #667eea;
+            color: white;
+            padding: 20px;
+            border: none;
+            border-radius: 10px;
+            cursor: pointer;
+            font-size: 18px;
+            width: 100%;
+            font-weight: bold;
+            margin-top: 18px;
+        }
+
+        button:hover {
+            background: #5568d3;
+        }
+
+        .error {
+            background: #fee;
+            color: #c33;
+            padding: 16px;
+            border-radius: 10px;
+            margin-top: 20px;
+            display: none;
+            text-align: center;
+            border: 1px solid #fcc;
+            font-size: 15px;
+        }
+
+        /* 🔥 BADGE VISIBILITY FIX */
+        .badge {
+            background: #667eea;
+            color: white;
+            padding: 9px 22px;
+            border-radius: 24px;
+            font-size: 14px;
+            display: inline-block;
+            margin-bottom: 28px;
+            font-weight: bold;
+            letter-spacing: 0.6px;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <div style="text-align: center;">
+            <span class="badge">AUTHORIZED ACCESS ONLY</span>
+        </div>
+
+        <h1>Authority Login</h1>
+        <p class="subtitle">Emergency Medical Access System</p>
+
+        <form id="loginForm">
+            <div class="form-group">
+                <label>Username</label>
+                <input type="text" name="username" required autofocus>
+            </div>
+
+            <div class="form-group">
+                <label>Password</label>
+                <input type="password" name="password" required>
+            </div>
+
+            <button type="submit">Login</button>
+            <div class="error" id="error"></div>
+        </form>
+    </div>
+
+    <script>
+        document.getElementById('loginForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+
+            const formData = new FormData(e.target);
+            const error = document.getElementById('error');
+            error.style.display = 'none';
+
+            try {
+                const response = await fetch('/login', {
+                    method: 'POST',
+                    body: formData
+                });
+
+                const data = await response.json();
+
+                if (response.ok) {
+                    window.location.href = data.redirect;
+                } else {
+                    error.textContent = data.error || 'Login failed';
+                    error.style.display = 'block';
+                }
+            } catch (err) {
+                error.textContent = 'Network error. Please try again.';
+                error.style.display = 'block';
+            }
+        });
+    </script>
+</body>
+</html>

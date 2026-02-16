@@ -1,0 +1,399 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Emergency Access - Medical Data</title>
+
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            font-family: Arial, sans-serif;
+            background: #f4f4f4;
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .header {
+            background: #c0392b;
+            color: white;
+            padding: 15px 20px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .header h1 { font-size: 20px; }
+
+        .logout {
+            background: white;
+            color: #c0392b;
+            padding: 8px 20px;
+            border-radius: 4px;
+            text-decoration: none;
+            font-weight: bold;
+        }
+
+        .container {
+            max-width: 700px;
+            margin: auto;
+            background: white;
+            padding: 40px;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+
+        h2 { margin-bottom: 8px; }
+        .subtitle { color: #666; margin-bottom: 25px; }
+
+        .form-group { margin-bottom: 20px; }
+
+        label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: bold;
+        }
+
+        input {
+            width: 100%;
+            padding: 14px;
+            border: 2px solid #ddd;
+            border-radius: 6px;
+            font-family: monospace;
+        }
+
+        button {
+            width: 100%;
+            padding: 14px;
+            border: none;
+            border-radius: 6px;
+            background: #c0392b;
+            color: white;
+            font-weight: bold;
+            cursor: pointer;
+            margin-bottom: 10px;
+        }
+
+        .fingerprint-btn { background: #9b59b6; }
+        .face-btn { background: #3498db; }
+
+        .divider {
+            text-align: center;
+            margin: 18px 0;
+            color: #999;
+        }
+
+        .status, .error {
+            display: none;
+            margin-top: 15px;
+            padding: 12px;
+            border-radius: 6px;
+            text-align: center;
+        }
+
+        .status {
+            background: #e3f2fd;
+            color: #1976d2;
+        }
+
+        .error {
+            background: #fee;
+            color: #c33;
+        }
+
+        /* RESULT BOX */
+        .result {
+            display: none;
+            margin-top: 30px;
+            padding: 25px;
+            background: #e8f5e9;
+            border-left: 5px solid #27ae60;
+            border-radius: 8px;
+        }
+
+        .result h3 {
+            color: #27ae60;
+            margin-bottom: 20px;
+        }
+
+        .data-row {
+            display: flex;
+            margin-bottom: 12px;
+        }
+
+        .data-label {
+            width: 180px;
+            font-weight: bold;
+        }
+
+        .blood-group {
+            font-size: 22px;
+            font-weight: bold;
+            color: #c0392b;
+        }
+
+        .alert-box {
+            background: #fff3cd;
+            padding: 14px;
+            border-radius: 6px;
+            margin-top: 20px;
+            border: 1px solid #ffc107;
+        }
+
+        .timestamp {
+            text-align: center;
+            font-size: 12px;
+            margin-top: 15px;
+            color: #666;
+        }
+        .home-btn{
+    display:inline-block;
+    padding:12px 26px;
+    background:#2c3e50;
+    color:white;
+    text-decoration:none;
+    border-radius:6px;
+    font-weight:bold;
+    font-size:14px;
+}
+
+.home-btn:hover{
+    background:#1a252f;
+}
+
+    </style>
+</head>
+
+<body>
+
+<div class="header">
+    <h1>Emergency Medical Access System</h1>
+    <a href="/logout" class="logout">Logout</a>
+</div>
+
+<div class="container">
+
+    <h2>Emergency Data Access</h2>
+    <p class="subtitle">Enter Citizen UUID or use biometric identification</p>
+
+    <!-- UUID ACCESS -->
+    <form id="accessForm">
+        <div class="form-group">
+            <label>Citizen UUID</label>
+            <input type="text" name="citizen_id" placeholder="Enter UUID or scan QR">
+        </div>
+        <button type="submit">Access Emergency Data</button>
+    </form>
+
+    <div class="divider">OR</div>
+
+    <!-- FINGERPRINT -->
+    <form id="fingerprintForm">
+        <div class="form-group">
+            <label>Fingerprint ID</label>
+            <input type="text" name="fingerprint_id" placeholder="Enter Fingerprint ID">
+        </div>
+        <button class="fingerprint-btn">Identify via Fingerprint</button>
+    </form>
+
+    <div class="divider">OR</div>
+
+    <!-- FACE -->
+    <button class="face-btn" id="faceBtn">Identify via Face Recognition</button>
+
+    <div class="status" id="status"></div>
+    <div class="error" id="error"></div>
+
+    <!-- RESULT -->
+    <div class="result" id="emergencyResult">
+
+        <h3>Emergency Medical Information Retrieved</h3>
+
+        <div class="data-row">
+            <div class="data-label">Patient Name:</div>
+            <div id="name"></div>
+        </div>
+
+        <div class="data-row">
+            <div class="data-label">Blood Group:</div>
+            <div id="bloodGroup" class="blood-group"></div>
+        </div>
+
+        <div class="data-row">
+            <div class="data-label">Medical Conditions:</div>
+            <div id="medicalInfo"></div>
+        </div>
+
+        <div class="data-row">
+            <div class="data-label">Emergency Contact:</div>
+            <div id="emergencyContact"></div>
+        </div>
+
+        <div class="alert-box">
+            <b>Emergency Alert Sent</b><br>
+            <span id="alertMessage"></span>
+        </div>
+
+        <div class="timestamp" id="timestamp"></div>
+
+        <!-- TIMER -->
+        <p id="timerText" style="text-align:center;margin-top:15px;font-size:13px;color:#555;">
+            This information will auto-hide in <b>5:00</b> minutes
+        </p>
+        <div style="text-align:center;margin-top:25px;">
+    <a href="/" class="home-btn">Go to Home Page</a>
+</div>
+
+
+    </div>
+
+</div>
+
+<script>
+let timer;
+function startTimer() {
+    let seconds = 300;
+    clearInterval(timer);
+
+    timer = setInterval(() => {
+        seconds--;
+        let m = Math.floor(seconds / 60);
+        let s = seconds % 60;
+        s = s < 10 ? "0" + s : s;
+
+        document.getElementById("timerText").innerHTML =
+            `This information will auto-hide in <b>${m}:${s}</b> minutes`;
+
+        if (seconds <= 0) {
+            clearInterval(timer);
+            document.getElementById("emergencyResult").innerHTML =
+                `<div style="text-align:center;color:#c0392b;">
+                    <b>Session Expired</b><br>
+                    Emergency data hidden for privacy.
+                </div>`;
+        }
+    }, 1000);
+}
+
+function displayResult(data) {
+    document.getElementById("name").textContent = data.name;
+    document.getElementById("bloodGroup").textContent = data.blood_group;
+    document.getElementById("medicalInfo").textContent = data.medical_info;
+    document.getElementById("emergencyContact").textContent = data.emergency_contact;
+    document.getElementById("alertMessage").textContent = data.alert_message;
+    document.getElementById("timestamp").textContent = "Alert sent at: " + data.timestamp;
+
+    document.getElementById("emergencyResult").style.display = "block";
+    startTimer();
+}
+</script>
+<script>
+// UUID ACCESS
+document.getElementById("accessForm").addEventListener("submit", async function(e) {
+    e.preventDefault();
+
+    const formData = new FormData(this);
+    const error = document.getElementById("error");
+    const status = document.getElementById("status");
+
+    error.style.display = "none";
+    status.style.display = "none";
+
+    try {
+        const response = await fetch("/access", {
+            method: "POST",
+            body: formData
+        });
+
+        const data = await response.json();
+
+        if (!response.ok) {
+            error.innerText = data.error || "Access failed";
+            error.style.display = "block";
+            return;
+        }
+
+        displayResult(data);
+
+    } catch (err) {
+        error.innerText = "Server error. Try again.";
+        error.style.display = "block";
+    }
+});
+
+
+// FINGERPRINT ACCESS
+document.getElementById("fingerprintForm").addEventListener("submit", async function(e) {
+    e.preventDefault();
+
+    const formData = new FormData(this);
+    const error = document.getElementById("error");
+    const status = document.getElementById("status");
+
+    error.style.display = "none";
+    status.innerText = "Verifying fingerprint...";
+    status.style.display = "block";
+
+    try {
+        const response = await fetch("/fingerprint_identify", {
+            method: "POST",
+            body: formData
+        });
+
+        const data = await response.json();
+
+        if (!response.ok) {
+            status.style.display = "none";
+            error.innerText = data.error || "Fingerprint not found";
+            error.style.display = "block";
+            return;
+        }
+
+        status.style.display = "none";
+        displayResult(data);
+
+    } catch {
+        status.style.display = "none";
+        error.innerText = "Fingerprint service error";
+        error.style.display = "block";
+    }
+});
+
+
+// FACE RECOGNITION
+document.getElementById("faceBtn").addEventListener("click", async function() {
+    const error = document.getElementById("error");
+    const status = document.getElementById("status");
+
+    error.style.display = "none";
+    status.innerText = "Scanning face...";
+    status.style.display = "block";
+
+    try {
+        const response = await fetch("/face_recognize", {
+            method: "POST"
+        });
+
+        const data = await response.json();
+
+        if (!response.ok) {
+            status.style.display = "none";
+            error.innerText = data.error || "Face not recognized";
+            error.style.display = "block";
+            return;
+        }
+
+        status.style.display = "none";
+        displayResult(data);
+
+    } catch {
+        status.style.display = "none";
+        error.innerText = "Face recognition failed";
+        error.style.display = "block";
+    }
+});
+</script>
+
+</body>
+</html>
